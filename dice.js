@@ -11,92 +11,40 @@ var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnima
                        window.mozRequestAnimationFrame || window.msRequestAnimationFrame || 
                        function(c) {window.setTimeout(c, 15)};
  
-//window onload event
 window.addEventListener('load', onloadHandler, false);
-
-/*
-//for texture like 0t
-var bitmaps = [];
-
-var lastMouseX=10000;
-var lastMouseY=10000;
-
-rolling = false;
-var ranX= 0; //-1 *(Math.random()*300 +20);
-var ranY= 0; 
-var ranZ= 0; 
-var countroll=1000;
-
-// port to js
-//turn angle degree into 3D scene +180, -180
-var inc=10;
-var ang=0;
-var count=180;
-var conv_ang;
-
-//this for demo of funtion
-while(count>0){
-	ang= (ang+inc) % 360;                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-	console.log( "--" + ang);
-	deg_2_3D( ang );
-	console.log( conv_ang );
-	count--;
-}
-
-*/
-
-function onloadHandler()
-{
  
-	//borrow fr 0t
+function onloadHandler()
+{	
+	//----var init , all var to global 
+	freshstart = true; 
+	pause = false; 	
+	lastMouseX=10000;
+	lastMouseY=10000;
+	
+	rolling = false;
+	ranX= 0; //-1 *(Math.random()*300 +20);
+	ranY= 0; 
+	ranZ= 0; 
+	countroll=1000; //for checking use
+
+
+	//borrow fr 0t --load bitmap first
 	bitmaps = [];
 		
-	// get the images loading
-   var loader = new Phoria.Preloader();
-   for (var i=0; i<6; i++)
-   {
-      bitmaps.push(new Image());
-      bmp_code=i+1;
-      loader.addImage(bitmaps[i], 'images/d'+bmp_code+'.jpg');
-   }
+	//get the images loading
+	var loader = new Phoria.Preloader();
+	for (var i=0; i<6; i++)
+	{
+	  bitmaps.push(new Image());
+	  bmp_code=i+1;
+	  loader.addImage(bitmaps[i], 'images/d'+bmp_code+'.jpg');
+	}
    //--end borrow
    
-   pause=true;
-   
-   console.log( "I am here" );
-   //----moved in from outside
-   		
-   		//deleted all var to global
-   		
-
-		
-		lastMouseX=10000;
-		lastMouseY=10000;
-		
-		rolling = false;
-		ranX= 0; //-1 *(Math.random()*300 +20);
-		ranY= 0; 
-		ranZ= 0; 
-		countroll=1000;
-		
-		// port to js
-		//turn angle degree into 3D scene +180, -180
-		inc=10;
-		ang=0;
-		count=180;
-		var conv_ang;
-		
-		//this for demo of funtion
-		while(count>0){
-			ang= (ang+inc) % 360;                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-			console.log( "--" + ang);
-			deg_2_3D( ang );
-			console.log( conv_ang );
-			count--;
-		}
-
-   
-  loader.onLoadCallback(init);
+	//for mouse rotation and position tracking
+	mouse = Phoria.View.addMouseEvents(canvas);
+  
+	loader.onLoadCallback(init);
 }
 
 
@@ -104,30 +52,33 @@ function onloadHandler()
 
 function init()
 {
-   // get the canvas DOM element and the 2D drawing context
-   var canvas = document.getElementById('canvas');
-    
-    var canvas2 = document.getElementById('canvas2');
-   
- 			//  document.getElementById("canvas").addEventListener('mousemove', genRan);
-//document.getElementById("canvas").addEventListener("touchmove", genRan, false);
-     
-//document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
-     
-     
-   // create the scene and setup camera, perspective and viewport
-   var scene = new Phoria.Scene();
-   
-   scene.camera.position = {x:0.0, y:5.0, z:-15.0};
-   
-   scene.perspective.aspect = canvas.width / canvas.height;
-   scene.viewport.width = canvas.width;
-   scene.viewport.height = canvas.height;
-   
-   // create a canvas renderer
-   var renderer = new Phoria.CanvasRenderer(canvas);
-   
-    
+	
+	
+	//1.========== get the canvas DOM element and the 2D drawing context
+	var canvas = document.getElementById('canvas');
+	
+	var canvas2 = document.getElementById('canvas2');
+	
+	//  document.getElementById("canvas").addEventListener('mousemove', genRan);
+	document.getElementById("canvas").addEventListener("touchmove", genRan, false);
+	 
+	document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
+	 
+	 
+	// create the scene and setup camera, perspective and viewport
+	var scene = new Phoria.Scene();
+	
+	scene.camera.position = {x:0.0, y:5.0, z:-15.0};
+	
+	scene.perspective.aspect = canvas.width / canvas.height;
+	scene.viewport.width = canvas.width;
+	scene.viewport.height = canvas.height;
+	
+	// create a canvas renderer
+	var renderer = new Phoria.CanvasRenderer(canvas);
+	
+	
+   //2.========== gen 3D objs
    
    /*
 		// add a grid to help visualise camera position etc.
@@ -144,7 +95,7 @@ function init()
       }
    }));
    
-*/
+	*/
    
    //build the cube
    var c = Phoria.Util.generateUnitCube();
@@ -178,34 +129,19 @@ function init()
    }));
    
    
-    // keep track of rotation
-   var rot = {
-      x: 0, y: 0, z: 0,
-      velx: 0, vely: 0, velz: 0,
-      nowx: 0, nowy: 0, nowz: 0,
-      ratio: 0.04
-   };
+	// keep track of rotation
+	var rot = {
+	  x: 0, y: 0, z: 0,
+	  velx: 0, vely: 0, velz: 0,
+	  nowx: 0, nowy: 0, nowz: 0,
+	  ratio: 0.04
+	};
    
-   
-   // mouse rotation and position tracking
-   var mouse = Phoria.View.addMouseEvents(canvas);
-   var freshstart = true; 
-   var pause = false;
-   
-   /*
-function genRan(){
-		ranX= -1 *(Math.random()*600 +120);
-		ranY= -1 *(Math.random()*600 +120);
-		ranZ= -1 *(Math.random()*600 +120);
-		pause=false;
-		rolling = true;
-		lastMouseY=mouse.velocityV;
-		lastMouseX=mouse.velocityH;  
-   }
-*/
-   
+  	//========end gen 3D objs
   
-   
+  	
+  	
+  //from now on loop on this 
    var fnAnimate = function() {
    
    //do this so the next action not trigger on start
@@ -294,13 +230,11 @@ function genRan(){
       	freshstart=false;
       }
    }
-   
-   
-    keyEvents();
- 
+	  
+	keyEvents();
 	
-   // start animation
-   requestAnimFrame(fnAnimate);
+	// start animation
+	requestAnimFrame(fnAnimate);
 }
  
  
@@ -355,7 +289,9 @@ function deg_2_3D( ang ){
 	//return deg;
 }
 
+
 function genRan(){
+		//beware var mouse is global 
 		ranX= -1 *(Math.random()*600 +120);
 		ranY= -1 *(Math.random()*600 +120);
 		ranZ= -1 *(Math.random()*600 +120);
@@ -364,3 +300,22 @@ function genRan(){
 		lastMouseY=mouse.velocityV;
 		lastMouseX=mouse.velocityH;  
    }
+
+
+
+/* test script
+		//turn angle degree into 3D scene +180, -180
+		inc=10;
+		ang=0;
+		count=180;
+		var conv_ang;
+		
+		//this for demo of funtion
+		while(count>0){
+			ang= (ang+inc) % 360;                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+			console.log( "--" + ang);
+			deg_2_3D( ang );
+			////console.log( conv_ang );
+			count--;
+		}
+*/
