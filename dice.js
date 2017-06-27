@@ -1,19 +1,20 @@
 
 /*
-
-define a plane with chess board as bg
-
-make a 3d chess
-move it on the blocks
-
+	to do:
+	define a plane with chess board as bg
+	
+	make a 3d chess
+	move it on the blocks
+	
 */
 var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
                        window.mozRequestAnimationFrame || window.msRequestAnimationFrame || 
                        function(c) {window.setTimeout(c, 15)};
  
-// bind to window onload event
+//window onload event
 window.addEventListener('load', onloadHandler, false);
 
+/*
 //for texture like 0t
 var bitmaps = [];
 
@@ -33,19 +34,23 @@ var ang=0;
 var count=180;
 var conv_ang;
 
+//this for demo of funtion
 while(count>0){
 	ang= (ang+inc) % 360;                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-	//console.log( "--" + ang);
+	console.log( "--" + ang);
 	deg_2_3D( ang );
-	//console.log( conv_ang );
+	console.log( conv_ang );
 	count--;
 }
 
+*/
 
 function onloadHandler()
 {
  
 	//borrow fr 0t
+	bitmaps = [];
+		
 	// get the images loading
    var loader = new Phoria.Preloader();
    for (var i=0; i<6; i++)
@@ -55,6 +60,42 @@ function onloadHandler()
       loader.addImage(bitmaps[i], 'images/d'+bmp_code+'.jpg');
    }
    //--end borrow
+   
+   pause=true;
+   
+   console.log( "I am here" );
+   //----moved in from outside
+   		
+   		//deleted all var to global
+   		
+
+		
+		lastMouseX=10000;
+		lastMouseY=10000;
+		
+		rolling = false;
+		ranX= 0; //-1 *(Math.random()*300 +20);
+		ranY= 0; 
+		ranZ= 0; 
+		countroll=1000;
+		
+		// port to js
+		//turn angle degree into 3D scene +180, -180
+		inc=10;
+		ang=0;
+		count=180;
+		var conv_ang;
+		
+		//this for demo of funtion
+		while(count>0){
+			ang= (ang+inc) % 360;                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+			console.log( "--" + ang);
+			deg_2_3D( ang );
+			console.log( conv_ang );
+			count--;
+		}
+
+   
   loader.onLoadCallback(init);
 }
 
@@ -68,10 +109,10 @@ function init()
     
     var canvas2 = document.getElementById('canvas2');
    
- //  document.getElementById("canvas").addEventListener('mousemove', genRan);
-     document.getElementById("canvas").addEventListener("touchmove", genRan, false);
+ 			//  document.getElementById("canvas").addEventListener('mousemove', genRan);
+//document.getElementById("canvas").addEventListener("touchmove", genRan, false);
      
-     document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
+//document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
      
      
    // create the scene and setup camera, perspective and viewport
@@ -151,15 +192,17 @@ function init()
    var freshstart = true; 
    var pause = false;
    
-   function genRan(){
-			ranX= -1 *(Math.random()*600 +120);
-			ranY= -1 *(Math.random()*600 +120);
-			ranZ= -1 *(Math.random()*600 +120);
-			pause=false;
-			rolling = true;
-			lastMouseY=mouse.velocityV;
-			lastMouseX=mouse.velocityH;  
+   /*
+function genRan(){
+		ranX= -1 *(Math.random()*600 +120);
+		ranY= -1 *(Math.random()*600 +120);
+		ranZ= -1 *(Math.random()*600 +120);
+		pause=false;
+		rolling = true;
+		lastMouseY=mouse.velocityV;
+		lastMouseX=mouse.velocityH;  
    }
+*/
    
   
    
@@ -179,20 +222,12 @@ function init()
    
  	//mouse action trigger animate  
      if (mouse.velocityV != lastMouseY || mouse.velocityH != lastMouseX) {
-         	 if ( rolling == false ){
-			/*
-			ranX= -1 *(Math.random()*600 +120);
-			ranY= -1 *(Math.random()*600 +120);
-			ranZ= -1 *(Math.random()*600 +120);
-			pause=false;
-			rolling = true;
-			lastMouseY=mouse.velocityV;
-			lastMouseX=mouse.velocityH;  
-			*/
+         if ( rolling == false ){
+			 
 			genRan();
 			//console.log(ranX);
 		}	
-         }
+     }
    
       if (!pause )
       { 
@@ -249,7 +284,6 @@ function init()
       }
       
       countroll--;
-//     console.log(countroll);
  	
       // this is a standard browser loop api
       requestAnimFrame(fnAnimate);
@@ -262,8 +296,17 @@ function init()
    }
    
    
-    
-   // key binding, esc 27, space bar 32
+    keyEvents();
+ 
+	
+   // start animation
+   requestAnimFrame(fnAnimate);
+}
+ 
+ 
+//====break out functions
+function keyEvents(){
+	// key binding, esc 27, space bar 32
    document.addEventListener('keydown', function(e) {
       switch (e.keyCode)
       {
@@ -293,18 +336,12 @@ function init()
          }
       }
    }, false);
-   
-   
-   //countroll--;
-	 //console.log(countroll);
-				
-   // start animation
-   requestAnimFrame(fnAnimate);
+
 }
-      
+ 
       
 
-
+//=========extra functions
 
 function deg_2_3D( ang ){
  
@@ -317,3 +354,13 @@ function deg_2_3D( ang ){
 	}
 	//return deg;
 }
+
+function genRan(){
+		ranX= -1 *(Math.random()*600 +120);
+		ranY= -1 *(Math.random()*600 +120);
+		ranZ= -1 *(Math.random()*600 +120);
+		pause=false;
+		rolling = true;
+		lastMouseY=mouse.velocityV;
+		lastMouseX=mouse.velocityH;  
+   }
