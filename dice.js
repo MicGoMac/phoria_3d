@@ -143,27 +143,20 @@ function init()
   
    //do this so the next action not trigger on start
    if ( freshstart ) {
+   		//cant these be set in init earlier?
+   		
 		lastMouseY=mouse.velocityV;
 		lastMouseX=mouse.velocityH;
 		
 		rot.velx =0;
 		rot.vely =0;
 		rot.velz =0;
-		
 		cube.rotateX(-0*Phoria.RADIANS).rotateY(-0*Phoria.RADIANS).rotateZ(-90*Phoria.RADIANS);
    }
    
- 	//mouse action trigger animate  
-     if (mouse.velocityV != lastMouseY || mouse.velocityH != lastMouseX) {
-         if ( rolling == false ){
-			countroll=300; 
-			genRan();
-			//console.log(ranX);
-		}	
-     }
-   
-      if (!pause )
-      { 
+ 	mouseCheck();  
+ 	
+    if (!pause ){ 
          
           if (countroll > 0){
           	//random auto roll
@@ -220,13 +213,12 @@ function init()
 			countroll--;
 			console.log(  countroll);
       }
-      
-      
- 	
-      // this is a standard browser loop api
+       
+      //standard browser loop api, 
+      //here it first update with freshstart contents set above
       requestAnimFrame(fnAnimate);
       
-      //pause at start
+      //after first content drawn pause
       if ( freshstart==true ){
       	pause=true;
       	freshstart=false;
@@ -239,6 +231,7 @@ function init()
 	keyEvents();
 	
 	//UP to here, start animation
+	//console.log("first frame");
 	requestAnimFrame(fnAnimate);
 }
 
@@ -327,8 +320,16 @@ function keyEvents(){
    }, false);
 
 }
- 
-      
+
+function mouseCheck(){
+	if (mouse.velocityV != lastMouseY || mouse.velocityH != lastMouseX) {
+         if ( rolling == false ){
+			countroll=300; 
+			genRan();
+			//console.log(ranX);
+		}	
+     }
+}
 
 //=========extra functions
 
