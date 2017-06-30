@@ -53,7 +53,8 @@ function onloadHandler()
 function init()
 {
 	
-	var all_objects;
+	var active_objects=[];
+	var inactive_objects;
 	
 	//1.========== get the canvas DOM element and the 2D drawing context
 	var canvas = document.getElementById('canvas');
@@ -80,29 +81,32 @@ function init()
 	
 	
    //2.========== gen 3D objs
-   
-   /*
-		// add a grid to help visualise camera position etc.
-   var plane = Phoria.Util.generateTesselatedPlane(8,8,0,20);
-   scene.graph.push(Phoria.Entity.create({
-      points: plane.points,
-      edges: plane.edges,
-      polygons: plane.polygons,
-      style: {
-         shademode: "plain",
-         drawmode: "wireframe",
-         linewidth: 0.5,
-         objectsortmode: "back"
-      }
-   }));
-   
-	*/
-cube= cubeObj("testcube");
-cube2= cubeObj("more");
-scene.graph.push(cube);
-scene.graph.push(cube2);
+    
+	// add a grid to help visualise camera position etc.
+	plane1=addPlane();
+	
+	cube= cubeObj("testcube");
+	cube2= cubeObj("more");
+	cube2.translateX( 2).translateY(2).translateZ(-2);
+	// add a light
+	light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
+	
+	active_objects={ cube, cube2, light1 };
+	//console.log(active_objects);
+	
+	///this not work!!
+	for (var obj in active_objects) {
+		console.log(obj);
+		//scene.graph.push(obj); 
+	}
+ 
 
-cube2.translateX( 2).translateY(2).translateZ(-2);
+	scene.graph.push(cube); 
+	scene.graph.push(cube2); 
+	scene.graph.push(plane1); 
+	scene.graph.push(light1); 
+ 
+
 
    ////
    Phoria.Entity.debug(cube, {
@@ -112,9 +116,8 @@ cube2.translateX( 2).translateY(2).translateZ(-2);
    });
    
    
-   // add a light
-   light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
-   console.log(light1);
+
+
    scene.graph.push( light1);
    	 
 	// keep track of rotation
@@ -245,6 +248,7 @@ function cubeObj( my_id){
       cube.polygons[i].texture = i;
       console.log(my_id);
    }
+   
    return cube;
 }
 
@@ -253,7 +257,22 @@ function addLight(){
 	}
 
 
-
+function addPlane(){
+	var plane = Phoria.Util.generateTesselatedPlane(8,8,0,20);
+	
+	plane_obj= Phoria.Entity.create({
+		  points: plane.points,
+		  edges: plane.edges,
+		  polygons: plane.polygons,
+		  style: {
+			 shademode: "plain",
+			 drawmode: "wireframe",
+			 linewidth: 0.5,
+			 objectsortmode: "back"
+		  }
+	   });
+	return plane_obj;   
+}	
 
  
 //====break out functions
@@ -279,7 +298,7 @@ function keyEvents(){
 							rolling = true;
 							
 							// the loop count to retard
-							countroll=Math.floor(Math.random()*200 +320);
+countroll=Math.floor(Math.random()*200 +320);
 							
 							//console.log(countroll);
 
