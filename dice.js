@@ -53,6 +53,7 @@ function onloadHandler()
 function init()
 {
 	
+	var all_objects;
 	
 	//1.========== get the canvas DOM element and the 2D drawing context
 	var canvas = document.getElementById('canvas');
@@ -112,11 +113,9 @@ cube2.translateX( 2).translateY(2).translateZ(-2);
    
    
    // add a light
-   scene.graph.push(Phoria.DistantLight.create({
-      direction: {x:0, y:-0.5, z:1}
-   }));
-   
-   
+   light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
+   scene.graph.push( light1);
+   	 
 	// keep track of rotation
 	var rot = {
 	  x: 0, y: 0, z: 0,
@@ -226,7 +225,7 @@ cube2.translateX( 2).translateY(2).translateZ(-2);
 }
 
 
-//object builders
+//===========object builders
 function cubeObj( my_id){
 	   //build the cube
    var c = Phoria.Util.generateUnitCube();
@@ -246,9 +245,11 @@ function cubeObj( my_id){
       console.log(my_id);
    }
    return cube;
-   
-
 }
+
+function addLight(){
+	Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} });
+	}
 
 
 
