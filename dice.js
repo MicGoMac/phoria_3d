@@ -25,7 +25,7 @@ function onloadHandler()
 	ranX= 0; //-1 *(Math.random()*300 +20);
 	ranY= 0; 
 	ranZ= 0; 
-	countroll=1000; //for checking use
+	countroll=300; //for checking use
 
 
 	//borrow fr 0t --load bitmap first
@@ -91,36 +91,42 @@ function init()
 	// add a light
 	light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
 	
-	active_objects={ cube, cube2, light1 };
-	//console.log(active_objects);
 	
-	///this not work!!
-	for (var obj in active_objects) {
-		console.log(obj);
-		//scene.graph.push(obj); 
-	}
- 
+	/*	====try holding objects in array or objects
+		//	active_objects={ cube, cube2, light1 };
+		 
+		var active_objects = [];
+		 
+		active_objects.push(cube); 
+		active_objects.push(cube2); 
+		active_objects.push(plane1); 
+		active_objects.push(light1);
+		 
+		///this not work!!
+		for ( obj in active_objects) {
+			console.log(obj);
+			if ( cube == obj ){ console.log("meet");}
+			scene.graph.push(obj); 
+		}
+ 	*/
 
+	 
 	scene.graph.push(cube); 
 	scene.graph.push(cube2); 
 	scene.graph.push(plane1); 
-	scene.graph.push(light1); 
- 
-
-
+	scene.graph.push(light1);
+	 
+  
    ////
    Phoria.Entity.debug(cube, {
 	  showId: true,
-      //showAxis: true,
+      showAxis: true,
       showPosition: true
    });
-   
-   
-
-
-   scene.graph.push( light1);
+   ;
+    
    	 
-	// keep track of rotation
+	// keep track of rotation, who's rot? cube?
 	var rot = {
 	  x: 0, y: 0, z: 0,
 	  velx: 0, vely: 0, velz: 0,
@@ -134,23 +140,23 @@ function init()
   	
   //from now on loop on this 
    var fnAnimate = function() {
-   
+  
    //do this so the next action not trigger on start
    if ( freshstart ) {
-   	lastMouseY=mouse.velocityV;
-   	lastMouseX=mouse.velocityH;
-   	
-   	rot.velx =0;
-   	rot.vely =0;
-   	rot.velz =0;
-   	
-   	cube.rotateX(-0*Phoria.RADIANS).rotateY(-0*Phoria.RADIANS).rotateZ(-90*Phoria.RADIANS);
+		lastMouseY=mouse.velocityV;
+		lastMouseX=mouse.velocityH;
+		
+		rot.velx =0;
+		rot.vely =0;
+		rot.velz =0;
+		
+		cube.rotateX(-0*Phoria.RADIANS).rotateY(-0*Phoria.RADIANS).rotateZ(-90*Phoria.RADIANS);
    }
    
  	//mouse action trigger animate  
      if (mouse.velocityV != lastMouseY || mouse.velocityH != lastMouseX) {
          if ( rolling == false ){
-			 
+			countroll=300; 
 			genRan();
 			//console.log(ranX);
 		}	
@@ -179,7 +185,7 @@ function init()
            
 					
           }else{
-          	//retard to stop
+          	//countroll==0, retard to stop
           	
 						 // rotate local matrix of the cube
 						 // += Add and Assignment, as newx grow it will retard the roll
@@ -200,17 +206,22 @@ function init()
 						if ( Math.abs( rot.velx ) < 0.05){
 							rolling = false;
 							//console.log(rot.velx + "  " + rot.vely + "  " + rot.velz);
+							
 							pause=true;
+							
 						}
-					}	
+			}	
 						
 						
-						// execute the model view 3D pipeline and render the scene
-						scene.modelView();
-						renderer.render(scene);				
+			// execute the model view 3D pipeline and render the scene
+			scene.modelView();
+			renderer.render(scene);
+			
+			countroll--;
+			console.log(  countroll);
       }
       
-      countroll--;
+      
  	
       // this is a standard browser loop api
       requestAnimFrame(fnAnimate);
@@ -221,12 +232,19 @@ function init()
       	freshstart=false;
       }
    }
-	  
+	
+	
+	//===the codes below called only once, then it will loop in requestAnimFrame(fnAnimate); above
+	
 	keyEvents();
 	
-	// start animation
+	//UP to here, start animation
 	requestAnimFrame(fnAnimate);
 }
+
+
+
+
 
 
 //===========object builders
@@ -276,7 +294,7 @@ function addPlane(){
 
  
 //====break out functions
-function keyEvents(){
+function keyEvents(){ 
 	// key binding, esc 27, space bar 32
    document.addEventListener('keydown', function(e) {
       switch (e.keyCode)
@@ -298,7 +316,7 @@ function keyEvents(){
 							rolling = true;
 							
 							// the loop count to retard
-countroll=Math.floor(Math.random()*200 +320);
+							countroll=Math.floor(Math.random()*200 +320);
 							
 							//console.log(countroll);
 
