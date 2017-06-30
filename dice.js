@@ -114,6 +114,7 @@ cube2.translateX( 2).translateY(2).translateZ(-2);
    
    // add a light
    light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
+   console.log(light1);
    scene.graph.push( light1);
    	 
 	// keep track of rotation
@@ -248,7 +249,7 @@ function cubeObj( my_id){
 }
 
 function addLight(){
-	Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} });
+	return Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} });
 	}
 
 
