@@ -96,29 +96,17 @@ function init()
    }));
    
 	*/
-   
-   //build the cube
-   var c = Phoria.Util.generateUnitCube();
-   var cube = Phoria.Entity.create({
-   		id: "dice",
-      points: c.points,
-      edges: c.edges,
-      polygons: c.polygons
-   });
-   for (var i=0; i<6; i++)
-   {
-      //cube.polygons[i].color = [42*i, 256-(42*i), (128+(42*i))%256];
-      //use texture like 0t
-      //console.log(bitmaps[i]);
-      cube.textures.push(bitmaps[i]);
-      cube.polygons[i].texture = i;
-   }
-   scene.graph.push(cube);
-   
+cube= cubeObj("testcube");
+cube2= cubeObj("more");
+scene.graph.push(cube);
+scene.graph.push(cube2);
+
+cube2.translateX( 2).translateY(2).translateZ(-2);
+
    ////
    Phoria.Entity.debug(cube, {
 	  showId: true,
-      showAxis: true,
+      //showAxis: true,
       showPosition: true
    });
    
@@ -236,7 +224,35 @@ function init()
 	// start animation
 	requestAnimFrame(fnAnimate);
 }
- 
+
+
+//object builders
+function cubeObj( my_id){
+	   //build the cube
+   var c = Phoria.Util.generateUnitCube();
+   var cube = Phoria.Entity.create({
+   		id: my_id,
+      points: c.points,
+      edges: c.edges,
+      polygons: c.polygons
+   });
+   for (var i=0; i<6; i++)
+   {
+      //cube.polygons[i].color = [42*i, 256-(42*i), (128+(42*i))%256];
+      //use texture like 0t
+      //console.log(bitmaps[i]);
+      cube.textures.push(bitmaps[i]);
+      cube.polygons[i].texture = i;
+      console.log(my_id);
+   }
+   return cube;
+   
+
+}
+
+
+
+
  
 //====break out functions
 function keyEvents(){
