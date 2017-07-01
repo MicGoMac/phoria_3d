@@ -1,6 +1,10 @@
 
 /*
 	to do:
+	
+	how to make each obj handle it's own movement like dir?
+	
+	
 	define a plane with chess board as bg
 	
 	make a 3d chess
@@ -86,10 +90,13 @@ function init()
 	plane1=addPlane();
 	
 	cube= cubeObj("testcube");
-	cube2= cubeObj("more");
-	cube2.translateX( 2).translateY(2).translateZ(-2);
+	cube2= cubeObj("more"); 
 	// add a light
 	light1=addLight();  //Phoria.DistantLight.create({ direction: {x:0, y:-0.5, z:1} })
+	
+	//work on the objects, pos , rot, etc
+	//how to make each obj animation itself like dir?
+	cube2.translateX( 2).translateY(2).translateZ(-2);
 	
 	
 	/*	====try holding objects in array or objects
@@ -147,6 +154,7 @@ function init()
    		
 		lastMouseY=mouse.velocityV;
 		lastMouseX=mouse.velocityH;
+		
 		
 		rot.velx =0;
 		rot.vely =0;
