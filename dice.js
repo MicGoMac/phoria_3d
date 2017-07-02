@@ -43,6 +43,9 @@ function onloadHandler()
 	  bmp_code=i+1;
 	  loader.addImage(bitmaps[i], 'images/d'+bmp_code+'.jpg');
 	}
+	
+	 bitmaps.push(new Image());
+	loader.addImage(bitmaps[6], 'images/honglok_chess_bg.jpg');
    //--end borrow
    
 	//for mouse rotation and position tracking
@@ -253,10 +256,10 @@ function cubeObj( my_id){
 	   //build the cube
    var c = Phoria.Util.generateUnitCube();
    var cube = Phoria.Entity.create({
-   		id: my_id,
-      points: c.points,
-      edges: c.edges,
-      polygons: c.polygons
+		id: my_id,
+		points: c.points,
+		edges: c.edges,
+		polygons: c.polygons
    });
    for (var i=0; i<6; i++)
    {
@@ -265,9 +268,9 @@ function cubeObj( my_id){
       //console.log(bitmaps[i]);
       cube.textures.push(bitmaps[i]);
       cube.polygons[i].texture = i;
-      console.log(my_id);
+      //console.log(my_id);
    }
-   
+  // console.log(cube.polygons);
    return cube;
 }
 
@@ -277,7 +280,7 @@ function addLight(){
 
 
 function addPlane(){
-	var plane = Phoria.Util.generateTesselatedPlane(8,8,0,20);
+	var plane = Phoria.Util.generateTesselatedPlane(1,1,0,10,1);
 	
 	plane_obj= Phoria.Entity.create({
 		  points: plane.points,
@@ -288,8 +291,17 @@ function addPlane(){
 			 drawmode: "wireframe",
 			 linewidth: 0.5,
 			 objectsortmode: "back"
-		  }
+		  },
+		  //added texture
+		  textures:[]
 	   });
+
+//texture not shown	   
+plane.textures=bitmaps[6];	   
+console.log(plane);
+
+plane.polygons.texture = 1;
+      
 	return plane_obj;   
 }	
 

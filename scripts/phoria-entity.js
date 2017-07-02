@@ -265,8 +265,7 @@ Phoria.CLIP_ARRAY_TYPE = (typeof Uint32Array !== 'undefined') ? Uint32Array : Ar
     * 
     * @param s {Object}    Optional style object literal to merge into the default style.
     */
-   Phoria.Entity.createStyle = function createStyle(s)
-   {
+   Phoria.Entity.createStyle = function createStyle(s) {
       var style = {
          color: [128,128,128],
          diffuse: 1.0,
