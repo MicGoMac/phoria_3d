@@ -71,13 +71,13 @@ function init()
 	//  document.getElementById("canvas").addEventListener('mousemove', genRan);
 	document.getElementById("canvas").addEventListener("touchmove", genRan, false);
 	 
-	document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
+	//document.getElementById("canvas2").addEventListener("touchmove", genRan, false);
 	 
 	 
 	// create the scene and setup camera, perspective and viewport
 	var scene = new Phoria.Scene();
 	
-	scene.camera.position = {x:0.0, y:5.0, z:-15.0};
+	scene.camera.position = {x:-1.0, y:5.0, z:-15.0};
 	
 	scene.perspective.aspect = canvas.width / canvas.height;
 	scene.viewport.width = canvas.width;
@@ -85,6 +85,20 @@ function init()
 	
 	// create a canvas renderer
 	var renderer = new Phoria.CanvasRenderer(canvas);
+	
+	//====repeat for scene2
+	var scene2 = new Phoria.Scene();
+	
+	scene2.camera.position = {x:0.0, y:5.0, z:-15.0};
+	
+	scene2.perspective.aspect = canvas2.width / canvas2.height;
+	scene2.viewport.width = canvas2.width;
+	scene2.viewport.height = canvas2.height;
+	
+	// create a canvas renderer
+	var renderer2 = new Phoria.CanvasRenderer(canvas2);
+	//====end repeat for scene2
+	
 	
 	
    //2.========== gen 3D objs
@@ -125,7 +139,12 @@ function init()
 	scene.graph.push(cube2); 
 	scene.graph.push(plane1); 
 	scene.graph.push(light1);
-	 
+	
+	//==repeat for scene2
+	scene2.graph.push(cube); 
+	scene2.graph.push(cube2); 
+	scene2.graph.push(plane1); 
+	scene2.graph.push(light1);
   
    ////
    Phoria.Entity.debug(cube, {
@@ -220,6 +239,9 @@ function init()
 			// execute the model view 3D pipeline and render the scene
 			scene.modelView();
 			renderer.render(scene);
+			
+			scene2.modelView();
+			renderer2.render(scene2);
 			
 			countroll--;
 			console.log(  countroll);
