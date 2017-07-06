@@ -102,7 +102,8 @@ function init()
 	
 	
    //2.========== gen 3D objs
-    
+     
+     
 	// add a grid to help visualise camera position etc.
 	plane1=addPlane();
 	
@@ -113,7 +114,7 @@ function init()
 	
 	//work on the objects, pos , rot, etc
 	//how to make each obj animation itself like dir?
-	cube2.translateX( 2).translateY(2).translateZ(-2);
+	cube2.translateX( 2).translateY(2).translateZ(5);
 	
 	
 	/*	====try holding objects in array or objects
@@ -134,16 +135,17 @@ function init()
 		}
  	*/
 
-	 
+	scene.graph.push(plane1);
 	scene.graph.push(cube); 
 	scene.graph.push(cube2); 
-	scene.graph.push(plane1); 
+	
 	scene.graph.push(light1);
 	
 	//==repeat for scene2
+	scene2.graph.push(plane1); 
 	scene2.graph.push(cube); 
 	scene2.graph.push(cube2); 
-	scene2.graph.push(plane1); 
+	
 	scene2.graph.push(light1);
   
    ////
@@ -302,31 +304,29 @@ function addLight(){
 
 
 function addPlane(){
-	var plane = Phoria.Util.generateTesselatedPlane(1,1,0,10,1);
+	var plane = Phoria.Util.generateTesselatedPlane(1,1,0,10,true);
 	
 	plane_obj= Phoria.Entity.create({
-		  points: plane.points,
-		  edges: plane.edges,
-		  polygons: plane.polygons,
-		  style: {
-			 shademode: "plain",
-			 drawmode: "wireframe",
-			 linewidth: 0.5,
-			 objectsortmode: "back"
-		  },
-		  //added texture
-		  textures:[]
+		   points: plane.points,
+      edges: plane.edges,
+      polygons: plane.polygons,
+      style: {
+         shademode: "plain",
+         texture: 0
+      }
+		  
 	   });
 
-//texture not shown	   
-plane.textures=bitmaps[6];	   
-console.log(plane);
+	plane_obj.textures.push(bitmaps[6]);
+ 	 plane_obj.translateY(-1);  
+	console.log(plane_obj);
 
-plane.polygons.texture = 1;
+	//plane.polygons.texture = 1;
       
 	return plane_obj;   
 }	
 
+ 
  
 //====break out functions
 function keyEvents(){ 
